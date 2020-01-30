@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Button, Row, Card } from "react-bootstrap";
+import { Modal, Button, Row } from "react-bootstrap";
 import ModalCard from "./modalCard";
 
 const LineUpModal = props => {

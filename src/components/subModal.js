@@ -1,15 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 
 const SubModal = props => {
+  const [number, setNumber] = useState();
+  const onChange = e => {
+    setNumber(e.target.value);
+  };
   return (
-    <Modal show={props.show === "sub"}>
+    <Modal show={props.show === "sub"} onHide={props.cancelSub}>
       <Modal.Header closeButton>
-        <Modal.Title>Enter line-up</Modal.Title>
+        <Modal.Title>Sub Please!</Modal.Title>
       </Modal.Header>
-      <Modal.Body> sub modal!</Modal.Body>
+      <Modal.Body>
+        <input
+          type="text"
+          className="form-control"
+          onChange={e => onChange(e)}
+          style={{ width: "4rem" }}
+          required
+        />
+      </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary">Save Changes</Button>
+        <Button variant="primary" onClick={() => props.submitSub(number)}>
+          Sub
+        </Button>
       </Modal.Footer>
     </Modal>
   );

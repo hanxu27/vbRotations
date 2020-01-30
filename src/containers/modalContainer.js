@@ -13,7 +13,7 @@ const ModalContainer = props => {
           backZones={props.backZones}
         />
       ) : (
-        <SubModal show={props.show} />
+        <SubModal show={props.show} cancelSub={props.cancelSub} submitSub={props.submitSub} />
       )}
     </React.Fragment>
   );

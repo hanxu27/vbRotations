@@ -10,12 +10,23 @@ export default class App extends Component {
     subs: 0,
     rotationCount: 0,
     totalRotationCount: 0,
-    show: "line-up"
+    show: "line-up",
+    subZone: null
   };
-
+  cancelSub = () => {
+    this.setState({ show: false });
+  };
   setLineUp = lineup => {
     this.setState({ lineup });
     this.setState({ show: false });
+  };
+
+  handleSubModal = e => {
+    this.setState({ show: "sub", subZone: e.target.id });
+  };
+
+  submitSub = number => {
+    console.log(this.state.subZone, number);
   };
 
   rotate = () => {
@@ -58,6 +69,8 @@ export default class App extends Component {
           setLineUp={this.setLineUp}
           frontZones={this.frontZones}
           backZones={this.backZones}
+          cancelSub={this.cancelSub}
+          submitSub={this.submitSub}
         />
         <Row className="justify-content-md-center">
           <CardGroup>
@@ -69,6 +82,7 @@ export default class App extends Component {
                     ? this.state.lineup[zone + (this.state.rotationCount % 6) - 6]
                     : this.state.lineup[zone + (this.state.rotationCount % 6)]
                 }
+                handleSubModal={this.handleSubModal}
                 zone={zone}
               />
             ))}
@@ -84,12 +98,13 @@ export default class App extends Component {
                     ? this.state.lineup[zone + (this.state.rotationCount % 6) - 6]
                     : this.state.lineup[zone + (this.state.rotationCount % 6)]
                 }
+                handleSubModal={this.handleSubModal}
                 zone={zone}
               />
             ))}
           </CardGroup>
         </Row>
-        <Row className="justify-content-md-center">
+        <Row className="mt-2 justify-content-md-center">
           <Button variant="success" onClick={this.rotate}>
             Rotate
           </Button>

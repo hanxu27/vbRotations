@@ -6,7 +6,9 @@ const ZoneCard = props => {
     <Card style={{ width: "18rem", maxHeight: "20rem" }}>
       <Card.Title>{`Zone #${props.zone}`}</Card.Title>
       <Card.Body>
-        <Button>{props.lineup}</Button>
+        <Button onClick={e => props.handleSubModal(e)} id={props.zone}>
+          {props.lineup}
+        </Button>
       </Card.Body>
     </Card>
   );
