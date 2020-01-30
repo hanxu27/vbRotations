@@ -2,13 +2,20 @@ import React, { Component } from "react";
 import { Container, CardGroup, Row, Button } from "react-bootstrap";
 import "./App.css";
 import ZoneCard from "./components/zoneCard";
+import ModalContainer from "./containers/modalContainer";
 
 export default class App extends Component {
   state = {
-    lineup: { 1: [1], 2: [2], 3: [3], 4: [4], 5: [5], 6: [6] },
+    lineup: {},
     subs: 0,
     rotationCount: 0,
-    totalRotationCount: 0
+    totalRotationCount: 0,
+    show: "line-up"
+  };
+
+  setLineUp = lineup => {
+    this.setState({ lineup });
+    this.setState({ show: false });
   };
 
   rotate = () => {
@@ -41,15 +48,20 @@ export default class App extends Component {
     });
   };
 
+  frontZones = [4, 3, 2];
+  backZones = [5, 6, 1];
   render() {
-    // console.log(this.state);
-    const frontZones = [4, 3, 2];
-    const backZones = [5, 6, 1];
     return (
-      <Container>
+      <Container className="mt-5">
+        <ModalContainer
+          show={this.state.show}
+          setLineUp={this.setLineUp}
+          frontZones={this.frontZones}
+          backZones={this.backZones}
+        />
         <Row className="justify-content-md-center">
           <CardGroup>
-            {frontZones.map(zone => (
+            {this.frontZones.map(zone => (
               <ZoneCard
                 key={zone}
                 lineup={
@@ -64,7 +76,7 @@ export default class App extends Component {
         </Row>
         <Row className="justify-content-md-center">
           <CardGroup>
-            {backZones.map(zone => (
+            {this.backZones.map(zone => (
               <ZoneCard
                 key={zone}
                 lineup={
