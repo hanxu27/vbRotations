@@ -1,5 +1,10 @@
 import React, { Component } from "react";
-import { Container, CardGroup, Row, Button } from "react-bootstrap";
+import {
+  Container,
+  CardGroup,
+  Row,
+  Button
+} from "react-bootstrap";
 import "./App.css";
 import ZoneCard from "./components/zoneCard";
 import ModalContainer from "./containers/modalContainer";
@@ -22,38 +27,66 @@ export default class App extends Component {
   };
 
   handleSubModal = e => {
-    this.setState({ show: "sub", subZone: e.target.id });
+    const subZone =
+      (parseInt(e.target.id) +
+        parseInt(this.state.rotationCount)) %
+      6;
+    this.setState({
+      show: "sub",
+      subZone
+    });
   };
 
   submitSub = number => {
-    console.log(this.state.subZone, number);
+    let newLineup = this.state.lineup;
+    newLineup[this.state.subZone].push(
+      parseInt(number)
+    );
+    this.setState({
+      subs: this.state.subs + 1,
+      lineup: newLineup,
+      show: false
+    });
   };
 
   rotate = () => {
     this.setState(prevState => {
       if (prevState.rotationCount === 5)
-        return { rotationCount: 0, totalRotationCount: prevState.totalRotationCount + 1 };
+        return {
+          rotationCount: 0,
+          totalRotationCount:
+            prevState.totalRotationCount + 1
+        };
       return {
-        rotationCount: prevState.rotationCount + 1,
-        totalRotationCount: prevState.totalRotationCount + 1
+        rotationCount:
+          prevState.rotationCount + 1,
+        totalRotationCount:
+          prevState.totalRotationCount + 1
       };
     });
   };
 
   undo = rotationCount => {
     this.setState(prevState => {
-      if (prevState.totalRotationCount > 0 && prevState.rotationCount === 0)
+      if (
+        prevState.totalRotationCount > 0 &&
+        prevState.rotationCount === 0
+      )
         return {
           rotationCount: 5,
-          totalRotationCount: prevState.totalRotationCount - 1
+          totalRotationCount:
+            prevState.totalRotationCount - 1
         };
       else if (prevState.totalRotationCount > 0)
         return {
-          rotationCount: prevState.rotationCount - 1,
-          totalRotationCount: prevState.totalRotationCount - 1
+          rotationCount:
+            prevState.rotationCount - 1,
+          totalRotationCount:
+            prevState.totalRotationCount - 1
         };
       return {
-        totalRotationCount: prevState.totalRotationCount,
+        totalRotationCount:
+          prevState.totalRotationCount,
         rotationCount: prevState.rotationCount
       };
     });
@@ -62,6 +95,17 @@ export default class App extends Component {
   frontZones = [4, 3, 2];
   backZones = [5, 6, 1];
   render() {
+    const zoneCalc = zone =>
+      zone + (this.state.rotationCount % 6) > 6
+        ? this.state.lineup[
+            zone +
+              (this.state.rotationCount % 6) -
+              6
+          ]
+        : this.state.lineup[
+            zone + (this.state.rotationCount % 6)
+          ];
+
     return (
       <Container className="mt-5">
         <ModalContainer
@@ -77,12 +121,10 @@ export default class App extends Component {
             {this.frontZones.map(zone => (
               <ZoneCard
                 key={zone}
-                lineup={
-                  zone + (this.state.rotationCount % 6) > 6
-                    ? this.state.lineup[zone + (this.state.rotationCount % 6) - 6]
-                    : this.state.lineup[zone + (this.state.rotationCount % 6)]
+                lineup={zoneCalc(zone)}
+                handleSubModal={
+                  this.handleSubModal
                 }
-                handleSubModal={this.handleSubModal}
                 zone={zone}
               />
             ))}
@@ -93,22 +135,26 @@ export default class App extends Component {
             {this.backZones.map(zone => (
               <ZoneCard
                 key={zone}
-                lineup={
-                  zone + (this.state.rotationCount % 6) > 6
-                    ? this.state.lineup[zone + (this.state.rotationCount % 6) - 6]
-                    : this.state.lineup[zone + (this.state.rotationCount % 6)]
+                lineup={zoneCalc(zone)}
+                handleSubModal={
+                  this.handleSubModal
                 }
-                handleSubModal={this.handleSubModal}
                 zone={zone}
               />
             ))}
           </CardGroup>
         </Row>
         <Row className="mt-2 justify-content-md-center">
-          <Button variant="success" onClick={this.rotate}>
+          <Button
+            variant="success"
+            onClick={this.rotate}
+          >
             Rotate
           </Button>
-          <Button variant="danger" onClick={this.undo}>
+          <Button
+            variant="danger"
+            onClick={this.undo}
+          >
             Undo
           </Button>
         </Row>
