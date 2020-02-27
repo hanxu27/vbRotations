@@ -30,7 +30,12 @@ export default class App extends Component {
     const subZone =
       (parseInt(e.target.id) +
         parseInt(this.state.rotationCount)) %
-      6;
+        6 ===
+      0
+        ? 6
+        : (parseInt(e.target.id) +
+            parseInt(this.state.rotationCount)) %
+          6;
     this.setState({
       show: "sub",
       subZone
