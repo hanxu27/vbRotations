@@ -9,12 +9,9 @@ const ZoneCard = props => {
         maxHeight: "20rem"
       }}
     >
-      <Card.Title>{`Zone #${props.zone}`}</Card.Title>
+      <Card.Title style={{ margin: "1rem" }}>{`Zone #${props.zone}`}</Card.Title>
       <Card.Body>
-        <Button
-          onClick={e => props.handleSubModal(e)}
-          id={props.zone}
-        >
+        <Button onClick={e => props.handleSubModal(e)} id={props.zone}>
           {props.lineup &&
             props.lineup.map(number => {
               return `${number} | `;
