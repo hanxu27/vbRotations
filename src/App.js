@@ -106,6 +106,7 @@ export default class App extends Component {
           backZones={this.backZones}
           cancelSub={this.cancelSub}
           submitSub={this.submitSub}
+          subsLeft={this.subCount - this.state.subs}
         />
         <Row className="justify-content-md-center">
           <CardGroup>
