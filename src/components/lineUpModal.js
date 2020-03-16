@@ -8,6 +8,7 @@ const LineUpModal = props => {
   const [isEnabled, setEnabled] = useState(false);
 
   const handleSubmit = e => {
+    props.setServe(serve);
     props.setLineUp(players);
   };
 

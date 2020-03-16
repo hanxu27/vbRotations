@@ -10,7 +10,7 @@ export default class App extends Component {
     subs: 0,
     team1: 0,
     team2: 0,
-    shouldRotate: false,
+    shouldRotate: null,
     rotationCount: 0,
     totalRotationCount: 0,
     show: "line-up",
@@ -26,12 +26,17 @@ export default class App extends Component {
     this.setState(prevState => ({ team2: prevState.team2 + 1, shouldRotate: true }));
   };
 
-  // sub functions
-  cancelSub = () => {
-    this.setState({ show: false });
-  };
+  // line up functions
   setLineUp = lineup => {
     this.setState({ lineup });
+    this.setState({ show: false });
+  };
+  setServe = serve => {
+    this.setState({ shouldRotate: !serve });
+  };
+
+  // sub functions
+  cancelSub = () => {
     this.setState({ show: false });
   };
 
@@ -102,6 +107,7 @@ export default class App extends Component {
         <ModalContainer
           show={this.state.show}
           setLineUp={this.setLineUp}
+          setServe={this.setServe}
           frontZones={this.frontZones}
           backZones={this.backZones}
           cancelSub={this.cancelSub}
@@ -110,7 +116,7 @@ export default class App extends Component {
         />
         <Row className="justify-content-md-center">
           <CardGroup>
-            <Card style={{ margin: "1rem" }}>
+            <Card className="mb-2 mr-2">
               <Card.Title>My Team</Card.Title>
               <Button
                 style={{ width: "12rem", height: "12rem" }}
@@ -120,7 +126,7 @@ export default class App extends Component {
                 <h1>{this.state.team1}</h1>
               </Button>
             </Card>
-            <Card style={{ margin: "1rem" }}>
+            <Card className="mb-2">
               <Card.Title>Other Team</Card.Title>
               <Button
                 style={{ width: "12rem", height: "12rem" }}
@@ -158,9 +164,9 @@ export default class App extends Component {
           <h1>
             <Badge variant="secondary">Subs left: {this.subCount - this.state.subs}</Badge>
           </h1>
-          <Button variant="danger" onClick={this.undo}>
+          {/* <Button variant="danger" onClick={this.undo}>
             Undo
-          </Button>
+          </Button> */}
         </Row>
       </Container>
     );

@@ -9,6 +9,7 @@ const ModalContainer = props => {
         <LineUpModal
           show={props.show}
           setLineUp={props.setLineUp}
+          setServe={props.setServe}
           frontZones={props.frontZones}
           backZones={props.backZones}
         />
