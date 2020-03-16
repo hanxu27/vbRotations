@@ -12,16 +12,24 @@ const SubModal = props => {
         <Modal.Title>Sub Please!</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <input
-          type="text"
-          className="form-control"
-          onChange={e => onChange(e)}
-          style={{ width: "4rem" }}
-          required
-        />
+        {props.subsLeft === 0 ? (
+          "No Subs Left"
+        ) : (
+          <input
+            type="text"
+            className="form-control"
+            onChange={e => onChange(e)}
+            style={{ width: "4rem" }}
+            required
+          />
+        )}
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" onClick={() => props.submitSub(number)}>
+        <Button
+          variant="primary"
+          onClick={() => props.submitSub(number)}
+          disabled={props.subsLeft === 0}
+        >
           Sub
         </Button>
       </Modal.Footer>

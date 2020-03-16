@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, CardGroup, Row, Button } from "react-bootstrap";
+import { Container, CardGroup, Row, Button, Card, Badge } from "react-bootstrap";
 import "./App.css";
 import ZoneCard from "./components/zoneCard";
 import ModalContainer from "./containers/modalContainer";
@@ -10,16 +10,33 @@ export default class App extends Component {
     subs: 0,
     team1: 0,
     team2: 0,
+    shouldRotate: null,
     rotationCount: 0,
     totalRotationCount: 0,
     show: "line-up",
     subZone: null
   };
-  cancelSub = () => {
-    this.setState({ show: false });
+  subCount = 12;
+  // score functions
+  clickTeam1 = () => {
+    this.state.shouldRotate && this.rotate();
+    this.setState(prevState => ({ team1: prevState.team1 + 1, shouldRotate: false }));
   };
+  clickTeam2 = () => {
+    this.setState(prevState => ({ team2: prevState.team2 + 1, shouldRotate: true }));
+  };
+
+  // line up functions
   setLineUp = lineup => {
     this.setState({ lineup });
+    this.setState({ show: false });
+  };
+  setServe = serve => {
+    this.setState({ shouldRotate: !serve });
+  };
+
+  // sub functions
+  cancelSub = () => {
     this.setState({ show: false });
   };
 
@@ -90,12 +107,36 @@ export default class App extends Component {
         <ModalContainer
           show={this.state.show}
           setLineUp={this.setLineUp}
+          setServe={this.setServe}
           frontZones={this.frontZones}
           backZones={this.backZones}
           cancelSub={this.cancelSub}
           submitSub={this.submitSub}
+          subsLeft={this.subCount - this.state.subs}
         />
         <Row className="justify-content-md-center">
+          <CardGroup>
+            <Card className="mb-2 mr-2">
+              <Card.Title>My Team</Card.Title>
+              <Button
+                style={{ width: "12rem", height: "12rem" }}
+                variant="success"
+                onClick={this.clickTeam1}
+              >
+                <h1>{this.state.team1}</h1>
+              </Button>
+            </Card>
+            <Card className="mb-2">
+              <Card.Title>Other Team</Card.Title>
+              <Button
+                style={{ width: "12rem", height: "12rem" }}
+                variant="danger"
+                onClick={this.clickTeam2}
+              >
+                <h1>{this.state.team2}</h1>
+              </Button>
+            </Card>
+          </CardGroup>
           <CardGroup>
             {this.frontZones.map(zone => (
               <ZoneCard
@@ -120,12 +161,12 @@ export default class App extends Component {
           </CardGroup>
         </Row>
         <Row className="mt-2 justify-content-md-center">
-          <Button variant="success" onClick={this.rotate}>
-            Rotate
-          </Button>
-          <Button variant="danger" onClick={this.undo}>
+          <h1>
+            <Badge variant="secondary">Subs left: {this.subCount - this.state.subs}</Badge>
+          </h1>
+          {/* <Button variant="danger" onClick={this.undo}>
             Undo
-          </Button>
+          </Button> */}
         </Row>
       </Container>
     );
