@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Container, CardGroup, Row, Button, Card, Badge } from "react-bootstrap";
+import { Container, CardGroup, Row, Button, Card, Badge, ProgressBar } from "react-bootstrap";
 import "./App.css";
 import ZoneCard from "./components/zoneCard";
 import ModalContainer from "./containers/modalContainer";
+import { GiVolleyballBall } from "react-icons/gi";
 
 export default class App extends Component {
   state = {
@@ -114,29 +115,31 @@ export default class App extends Component {
           submitSub={this.submitSub}
           subsLeft={this.subCount - this.state.subs}
         />
-        <Row className="justify-content-md-center">
-          <CardGroup>
-            <Card className="mb-2 mr-2">
-              <Card.Title>My Team</Card.Title>
-              <Button
-                style={{ width: "12rem", height: "12rem" }}
-                variant="success"
-                onClick={this.clickTeam1}
-              >
-                <h1>{this.state.team1}</h1>
-              </Button>
-            </Card>
-            <Card className="mb-2">
-              <Card.Title>Other Team</Card.Title>
-              <Button
-                style={{ width: "12rem", height: "12rem" }}
-                variant="danger"
-                onClick={this.clickTeam2}
-              >
-                <h1>{this.state.team2}</h1>
-              </Button>
-            </Card>
-          </CardGroup>
+
+        <Row className="justify-content-center">
+          <Card className="mb-2 mr-2">
+            <Card.Title>My Team {!this.state.shouldRotate && <GiVolleyballBall />}</Card.Title>
+            <Button
+              style={{ width: "12rem", height: "12rem" }}
+              variant="success"
+              onClick={this.clickTeam1}
+            >
+              <h1>{this.state.team1}</h1>
+            </Button>
+          </Card>
+          <Card className="mb-2">
+            <Card.Title>Other Team {this.state.shouldRotate && <GiVolleyballBall />}</Card.Title>
+            <Button
+              style={{ width: "12rem", height: "12rem" }}
+              variant="danger"
+              onClick={this.clickTeam2}
+            >
+              <h1>{this.state.team2}</h1>
+            </Button>
+          </Card>
+        </Row>
+        <ProgressBar now={100} striped label="Net" variant="dark" />
+        <Row className="mt-2 justify-content-center">
           <CardGroup>
             {this.frontZones.map(zone => (
               <ZoneCard
@@ -148,7 +151,7 @@ export default class App extends Component {
             ))}
           </CardGroup>
         </Row>
-        <Row className="justify-content-md-center">
+        <Row className="justify-content-center">
           <CardGroup>
             {this.backZones.map(zone => (
               <ZoneCard
@@ -160,7 +163,7 @@ export default class App extends Component {
             ))}
           </CardGroup>
         </Row>
-        <Row className="mt-2 justify-content-md-center">
+        <Row className="mt-2 justify-content-center">
           <h1>
             <Badge variant="secondary">Subs left: {this.subCount - this.state.subs}</Badge>
           </h1>

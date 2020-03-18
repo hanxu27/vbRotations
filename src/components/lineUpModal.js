@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Modal, Button, Row, InputGroup } from "react-bootstrap";
+import { Modal, Button, Row } from "react-bootstrap";
 import ModalCard from "./modalCard";
+import Court from "../components/court";
 
 const LineUpModal = props => {
   const [players, setPlayers] = useState({});
@@ -22,46 +23,49 @@ const LineUpModal = props => {
   const handleOptionChange = e => {
     setServe(!serve);
   };
+
   return (
     <Modal show={props.show === "line-up"}>
       <form onSubmit={handleSubmit}>
         <Modal.Header>
           <Modal.Title>Enter Line-up</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <Row className="justify-content-md-center">
-            {props.frontZones.map(zone => (
-              <ModalCard key={zone} zone={zone} handleOnChange={handleOnChange} />
-            ))}
-          </Row>
-          <Row className="justify-content-md-center">
-            {props.backZones.map(zone => (
-              <ModalCard key={zone} zone={zone} handleOnChange={handleOnChange} />
-            ))}
-          </Row>
-          <Row className="justify-content-md-center">
-            <p>
-              <input
-                type="radio"
-                value="Receive"
-                checked={!serve}
-                onChange={handleOptionChange}
-                className="m-2"
-              />
-              Receive
-            </p>
-            <p>
-              <input
-                type="radio"
-                value="Serve"
-                checked={serve}
-                onChange={handleOptionChange}
-                className="m-2"
-              />
-              Serve
-            </p>
-          </Row>
-        </Modal.Body>
+        <Court>
+          <Modal.Body>
+            <Row className="justify-content-center">
+              {props.frontZones.map(zone => (
+                <ModalCard key={zone} zone={zone} handleOnChange={handleOnChange} />
+              ))}
+            </Row>
+            <Row className="justify-content-center">
+              {props.backZones.map(zone => (
+                <ModalCard key={zone} zone={zone} handleOnChange={handleOnChange} />
+              ))}
+            </Row>
+            <Row className="justify-content-center">
+              <p>
+                <input
+                  type="radio"
+                  value="Receive"
+                  checked={!serve}
+                  onChange={handleOptionChange}
+                  className="m-2"
+                />
+                Receive
+              </p>
+              <p>
+                <input
+                  type="radio"
+                  value="Serve"
+                  checked={serve}
+                  onChange={handleOptionChange}
+                  className="m-2"
+                />
+                Serve
+              </p>
+            </Row>
+          </Modal.Body>
+        </Court>
         <Modal.Footer>
           <Button variant="primary" disabled={!isEnabled} onClick={handleSubmit}>
             Save Changes
