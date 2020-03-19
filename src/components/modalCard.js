@@ -7,7 +7,6 @@ const ModalCard = props => {
       <Card.Body>
         {`Zone ${props.zone}`}
         <input
-          type="text"
           className="form-control"
           onChange={props.handleOnChange}
           id={props.zone}

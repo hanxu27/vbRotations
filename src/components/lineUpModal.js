@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Button, Row } from "react-bootstrap";
+import { Modal, Button, Row, Badge } from "react-bootstrap";
 import ModalCard from "./modalCard";
 import Court from "../components/court";
 import { FaPlay } from "react-icons/fa";
@@ -7,21 +7,54 @@ import { FaPlay } from "react-icons/fa";
 const LineUpModal = props => {
   const [players, setPlayers] = useState({});
   const [serve, setServe] = useState(false);
-  const [isEnabled, setEnabled] = useState(false);
+  const [isComplete, setComplete] = useState(false);
+  const [dupPlayers, setDupPlayers] = useState(false);
 
   const handleSubmit = () => {
     props.setServe(serve);
     props.setLineUp(players);
   };
 
-  const handleOnChange = e => {
+  const handleOnChange = async e => {
     const k = e.target.id;
     const v = parseInt(e.target.value);
-    players[k] = [v];
-    setPlayers(players);
-    if (Object.keys(players).length === 6) setEnabled(true);
+    if (v) {
+      players[k] = [v];
+    } else {
+      delete players[k];
+    }
+    await setPlayers(players);
+    await checkDupPlayer();
+    await checkComplete();
   };
-  const handleOptionChange = e => {
+
+  const checkComplete = async () => {
+    if (Object.keys(players).length === 6) {
+      await setComplete(true);
+    } else {
+      await setComplete(false);
+    }
+  };
+
+  const distinct = (value, index, self) => self.indexOf(value) === index;
+
+  const checkDupPlayer = async () => {
+    let courtPlayers = [];
+    for (let [key, value] of Object.entries(players)) {
+      courtPlayers.push(value[0]);
+    }
+    console.log(
+      `unique check:${Object.keys(players).length} ${courtPlayers.filter(distinct).length})}`
+    );
+    console.log(players);
+    if (courtPlayers.filter(distinct).length !== Object.keys(players).length) {
+      await setDupPlayers(true);
+    } else {
+      await setDupPlayers(false);
+    }
+  };
+
+  const handleOptionChange = () => {
     setServe(!serve);
   };
 
@@ -72,7 +105,8 @@ const LineUpModal = props => {
           </Modal.Body>
         </Court>
         <Modal.Footer>
-          <Button variant="primary" disabled={!isEnabled} type="submit">
+          {dupPlayers && <Badge variant="danger">Check Line-Up for Duplicate Players</Badge>}
+          <Button variant="primary" disabled={!isComplete || dupPlayers} type="submit">
             Save Changes
           </Button>
         </Modal.Footer>

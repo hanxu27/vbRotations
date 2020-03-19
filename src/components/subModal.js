@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button, Row } from "react-bootstrap";
-import { MdWarning, MdRepeat } from "react-icons/md";
+import { MdRepeat } from "react-icons/md";
 
 const SubModal = props => {
   const [number, setNumber] = useState();
@@ -22,7 +22,6 @@ const SubModal = props => {
               "No Subs Left"
             ) : (
               <input
-                type="text"
                 className="form-control"
                 onChange={e => onChange(e)}
                 style={{ width: "4rem" }}
