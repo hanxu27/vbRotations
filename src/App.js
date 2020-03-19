@@ -15,16 +15,91 @@ export default class App extends Component {
     rotationCount: 0,
     totalRotationCount: 0,
     show: "line-up",
-    subZone: null
+    subZone: null,
+    history: [],
+    canUndo: false
   };
+
   subCount = 12;
+
+  // undo functions
+  undo = () => {
+    const history = [...this.state.history];
+    const current = history[history.length - 1];
+    const last = history[history.length - 2];
+
+    history.pop();
+
+    if (current === last) {
+      if (current === true) {
+        this.setState(prevState => ({
+          team2: prevState.team2 - 1
+        }));
+      } else {
+        this.setState(prevState => ({
+          team1: prevState.team1 - 1
+        }));
+      }
+    } else {
+      if (current === true) {
+        this.setState(prevState => ({
+          team2: prevState.team2 - 1
+        }));
+      } else {
+        this.setState(prevState => ({
+          team1: prevState.team1 - 1
+        }));
+        this.undoRotate();
+      }
+      this.setState({ shouldRotate: last });
+    }
+
+    this.setState({
+      history
+    });
+    history.length === 1 && this.setState({ canUndo: false });
+  };
+
+  undoRotate = () => {
+    this.setState(prevState => {
+      if (prevState.totalRotationCount > 0 && prevState.rotationCount === 0)
+        return {
+          rotationCount: 5,
+          totalRotationCount: prevState.totalRotationCount - 1
+        };
+      else if (prevState.totalRotationCount > 0)
+        return {
+          rotationCount: prevState.rotationCount - 1,
+          totalRotationCount: prevState.totalRotationCount - 1
+        };
+      return {
+        totalRotationCount: prevState.totalRotationCount,
+        rotationCount: prevState.rotationCount
+      };
+    });
+  };
+
   // score functions
   clickTeam1 = () => {
+    let history = [...this.state.history];
+    history.push(false);
     this.state.shouldRotate && this.rotate();
-    this.setState(prevState => ({ team1: prevState.team1 + 1, shouldRotate: false }));
+    this.setState(prevState => ({
+      team1: prevState.team1 + 1,
+      shouldRotate: false,
+      history,
+      canUndo: true
+    }));
   };
   clickTeam2 = () => {
-    this.setState(prevState => ({ team2: prevState.team2 + 1, shouldRotate: true }));
+    let history = [...this.state.history];
+    history.push(true);
+    this.setState(prevState => ({
+      team2: prevState.team2 + 1,
+      shouldRotate: true,
+      history,
+      canUndo: true
+    }));
   };
 
   // line up functions
@@ -33,7 +108,7 @@ export default class App extends Component {
     this.setState({ show: false });
   };
   setServe = serve => {
-    this.setState({ shouldRotate: !serve });
+    this.setState({ shouldRotate: !serve, history: [!serve] });
   };
 
   // sub functions
@@ -72,25 +147,6 @@ export default class App extends Component {
       return {
         rotationCount: prevState.rotationCount + 1,
         totalRotationCount: prevState.totalRotationCount + 1
-      };
-    });
-  };
-
-  undo = rotationCount => {
-    this.setState(prevState => {
-      if (prevState.totalRotationCount > 0 && prevState.rotationCount === 0)
-        return {
-          rotationCount: 5,
-          totalRotationCount: prevState.totalRotationCount - 1
-        };
-      else if (prevState.totalRotationCount > 0)
-        return {
-          rotationCount: prevState.rotationCount - 1,
-          totalRotationCount: prevState.totalRotationCount - 1
-        };
-      return {
-        totalRotationCount: prevState.totalRotationCount,
-        rotationCount: prevState.rotationCount
       };
     });
   };
@@ -167,9 +223,11 @@ export default class App extends Component {
           <h1>
             <Badge variant="secondary">Subs left: {this.subCount - this.state.subs}</Badge>
           </h1>
-          {/* <Button variant="danger" onClick={this.undo}>
+        </Row>
+        <Row className="m-2 justify-content-center">
+          <Button variant="warning" onClick={this.undo} disabled={!this.state.canUndo}>
             Undo
-          </Button> */}
+          </Button>
         </Row>
       </Container>
     );
