@@ -8,7 +8,7 @@ const LineUpModal = props => {
   const [serve, setServe] = useState(false);
   const [isEnabled, setEnabled] = useState(false);
 
-  const handleSubmit = e => {
+  const handleSubmit = () => {
     props.setServe(serve);
     props.setLineUp(players);
   };
@@ -50,6 +50,7 @@ const LineUpModal = props => {
                   checked={!serve}
                   onChange={handleOptionChange}
                   className="m-2"
+                  required
                 />
                 Receive
               </p>
@@ -67,7 +68,7 @@ const LineUpModal = props => {
           </Modal.Body>
         </Court>
         <Modal.Footer>
-          <Button variant="primary" disabled={!isEnabled} onClick={handleSubmit}>
+          <Button variant="primary" disabled={!isEnabled} type="submit">
             Save Changes
           </Button>
         </Modal.Footer>

@@ -11,7 +11,11 @@ const ModalCard = props => {
           className="form-control"
           onChange={props.handleOnChange}
           id={props.zone}
-          required
+          required={true}
+          type="number"
+          min={1}
+          step={1}
+          max={99}
         />
       </Card.Body>
     </Card>
