@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Modal, Button, Row } from "react-bootstrap";
 import ModalCard from "./modalCard";
 import Court from "../components/court";
+import { FaPlay } from "react-icons/fa";
 
 const LineUpModal = props => {
   const [players, setPlayers] = useState({});
@@ -28,7 +29,10 @@ const LineUpModal = props => {
     <Modal show={props.show === "line-up"}>
       <form onSubmit={handleSubmit}>
         <Modal.Header>
-          <Modal.Title>Enter Line-up</Modal.Title>
+          <Modal.Title>
+            {"Enter Line-up "}
+            <FaPlay />
+          </Modal.Title>
         </Modal.Header>
         <Court>
           <Modal.Body>
