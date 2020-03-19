@@ -130,11 +130,11 @@ export default class App extends Component {
   submitSub = number => {
     let newLineup = this.state.lineup;
     newLineup[this.state.subZone].push(parseInt(number));
-    this.setState({
-      subs: this.state.subs + 1,
+    this.setState(prevState => ({
+      subs: prevState.subs + 1,
       lineup: newLineup,
       show: false
-    });
+    }));
   };
 
   rotate = () => {

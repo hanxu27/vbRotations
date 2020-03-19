@@ -7,6 +7,10 @@ const SubModal = props => {
   const onChange = e => {
     setNumber(e.target.value);
   };
+  const handleSub = e => {
+    e.preventDefault();
+    props.submitSub(number);
+  };
   return (
     <Modal show={props.show === "sub"} onHide={props.cancelSub}>
       <Modal.Header closeButton>
@@ -15,7 +19,7 @@ const SubModal = props => {
           <MdRepeat />
         </Modal.Title>
       </Modal.Header>
-      <form onSubmit={() => props.submitSub(number)}>
+      <form onSubmit={e => handleSub(e)}>
         <Modal.Body style={{ backgroundColor: "#FFFF33" }}>
           <Row className="justify-content-center">
             {props.subsLeft === 0 ? (

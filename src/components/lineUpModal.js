@@ -43,10 +43,6 @@ const LineUpModal = props => {
     for (let [key, value] of Object.entries(players)) {
       courtPlayers.push(value[0]);
     }
-    console.log(
-      `unique check:${Object.keys(players).length} ${courtPlayers.filter(distinct).length})}`
-    );
-    console.log(players);
     if (courtPlayers.filter(distinct).length !== Object.keys(players).length) {
       await setDupPlayers(true);
     } else {
