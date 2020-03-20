@@ -20,8 +20,24 @@ export default class App extends Component {
     canUndo: false
   };
 
+  // magic number
   subCount = 12;
-
+  frontZones = [4, 3, 2];
+  backZones = [5, 6, 1];
+  // rotations
+  rotate = () => {
+    this.setState(prevState => {
+      if (prevState.rotationCount === 5)
+        return {
+          rotationCount: 0,
+          totalRotationCount: prevState.totalRotationCount + 1
+        };
+      return {
+        rotationCount: prevState.rotationCount + 1,
+        totalRotationCount: prevState.totalRotationCount + 1
+      };
+    });
+  };
   // undo functions
   undo = () => {
     const history = [...this.state.history];
@@ -116,12 +132,12 @@ export default class App extends Component {
     this.setState({ show: false });
   };
 
-  handleSubModal = e => {
+  handleSubModal = async e => {
     const subZone =
       (parseInt(e.target.id) + parseInt(this.state.rotationCount)) % 6 === 0
         ? 6
         : (parseInt(e.target.id) + parseInt(this.state.rotationCount)) % 6;
-    this.setState({
+    await this.setState({
       show: "sub",
       subZone
     });
@@ -137,22 +153,6 @@ export default class App extends Component {
     }));
   };
 
-  rotate = () => {
-    this.setState(prevState => {
-      if (prevState.rotationCount === 5)
-        return {
-          rotationCount: 0,
-          totalRotationCount: prevState.totalRotationCount + 1
-        };
-      return {
-        rotationCount: prevState.rotationCount + 1,
-        totalRotationCount: prevState.totalRotationCount + 1
-      };
-    });
-  };
-
-  frontZones = [4, 3, 2];
-  backZones = [5, 6, 1];
   render() {
     const zoneCalc = zone =>
       zone + (this.state.rotationCount % 6) > 6
@@ -170,6 +170,7 @@ export default class App extends Component {
           cancelSub={this.cancelSub}
           submitSub={this.submitSub}
           subsLeft={this.subCount - this.state.subs}
+          lineup={this.state.lineup}
         />
 
         <Row className="justify-content-center">

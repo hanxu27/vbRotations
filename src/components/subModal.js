@@ -1,15 +1,29 @@
 import React, { useState } from "react";
-import { Modal, Button, Row } from "react-bootstrap";
+import { Modal, Button, Row, Badge } from "react-bootstrap";
 import { MdRepeat } from "react-icons/md";
 
 const SubModal = props => {
   const [number, setNumber] = useState();
-  const onChange = e => {
-    setNumber(e.target.value);
+  const [legalSub, setLegalSub] = useState(true);
+  const [complete, setComplete] = useState(false);
+
+  const onChange = async e => {
+    let sub = parseInt(e.target.value);
+    sub ? setComplete(true) : setComplete(false);
+    checkSubs(sub);
   };
   const handleSub = e => {
     e.preventDefault();
     props.submitSub(number);
+  };
+  // check subs
+  const checkSubs = async sub => {
+    let dupPlayers = [];
+    await setNumber(sub);
+    for (let [key, value] of Object.entries(props.lineup)) {
+      dupPlayers.push(value[value.length - 1]);
+    }
+    await setLegalSub(!dupPlayers.includes(sub));
   };
   return (
     <Modal show={props.show === "sub"} onHide={props.cancelSub}>
@@ -39,7 +53,12 @@ const SubModal = props => {
           </Row>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" type="submit" disabled={props.subsLeft === 0}>
+          {!legalSub && <Badge variant="danger">Illegal Sub Check Players!</Badge>}
+          <Button
+            variant="primary"
+            type="submit"
+            disabled={props.subsLeft === 0 || !legalSub || !complete}
+          >
             Sub
           </Button>
         </Modal.Footer>

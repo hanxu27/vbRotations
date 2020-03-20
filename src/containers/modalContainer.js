@@ -15,6 +15,7 @@ const ModalContainer = props => {
         />
       ) : (
         <SubModal
+          lineup={props.lineup}
           show={props.show}
           cancelSub={props.cancelSub}
           submitSub={props.submitSub}
