@@ -16,12 +16,13 @@ const SubModal = props => {
     e.preventDefault();
     props.submitSub(number);
   };
+
   // check subs
   const checkSubs = async sub => {
     let dupPlayers = [];
     await setNumber(sub);
     for (let [key, value] of Object.entries(props.lineup)) {
-      if (key !== props.subZone) {
+      if (parseInt(key) !== props.subZone) {
         value.forEach(player => {
           dupPlayers.push(player);
         });
