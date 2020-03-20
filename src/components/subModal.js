@@ -49,7 +49,7 @@ const SubModal = props => {
               <input
                 className="form-control"
                 onChange={e => onChange(e)}
-                style={{ width: "4rem" }}
+                style={{ width: "6rem" }}
                 required
                 type="number"
                 min={1}

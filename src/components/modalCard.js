@@ -3,7 +3,7 @@ import { Card } from "react-bootstrap";
 
 const ModalCard = props => {
   return (
-    <Card style={{ width: "6rem", opacity: "0.9" }}>
+    <Card style={{ width: "8rem", opacity: "0.9" }}>
       <Card.Body>
         {`Zone ${props.zone}`}
         <input
