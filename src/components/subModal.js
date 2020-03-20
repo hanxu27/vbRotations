@@ -29,9 +29,14 @@ const SubModal = props => {
         dupPlayers.push(value[value.length - 1]);
       }
     }
-    console.log(props.subZone);
     await setLegalSub(!dupPlayers.includes(sub));
   };
+
+  const findSub = () => {
+    let subPlayer = props.subZone && props.lineup[props.subZone];
+    return subPlayer && `${subPlayer[subPlayer.length - 1]} `;
+  };
+
   return (
     <Modal show={props.show === "sub"} onHide={props.cancelSub}>
       <Modal.Header closeButton>
@@ -46,16 +51,20 @@ const SubModal = props => {
             {props.subsLeft === 0 ? (
               "No Subs Left"
             ) : (
-              <input
-                className="form-control"
-                onChange={e => onChange(e)}
-                style={{ width: "6rem" }}
-                required
-                type="number"
-                min={1}
-                step={1}
-                max={99}
-              />
+              <Row className="justify-content-center">
+                <h3>{findSub()} </h3>
+                <MdRepeat />
+                <input
+                  className="form-control"
+                  onChange={e => onChange(e)}
+                  style={{ width: "6rem" }}
+                  required
+                  type="number"
+                  min={1}
+                  step={1}
+                  max={99}
+                />
+              </Row>
             )}
           </Row>
         </Modal.Body>
