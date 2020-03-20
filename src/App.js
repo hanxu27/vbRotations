@@ -171,6 +171,7 @@ export default class App extends Component {
           submitSub={this.submitSub}
           subsLeft={this.subCount - this.state.subs}
           lineup={this.state.lineup}
+          subZone={this.state.subZone}
         />
 
         <Row className="justify-content-center">

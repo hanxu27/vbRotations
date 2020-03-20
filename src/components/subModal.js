@@ -21,8 +21,15 @@ const SubModal = props => {
     let dupPlayers = [];
     await setNumber(sub);
     for (let [key, value] of Object.entries(props.lineup)) {
-      dupPlayers.push(value[value.length - 1]);
+      if (key !== props.subZone) {
+        value.forEach(player => {
+          dupPlayers.push(player);
+        });
+      } else {
+        dupPlayers.push(value[value.length - 1]);
+      }
     }
+    console.log(props.subZone);
     await setLegalSub(!dupPlayers.includes(sub));
   };
   return (
